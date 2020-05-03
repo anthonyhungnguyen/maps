@@ -1,15 +1,30 @@
 {
-  "name": "maps-project",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "next": "9.3.6",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
-  }
+	"name": "maps-project",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"go": "nodemon index.js",
+		"export": "next export"
+	},
+	"dependencies": {
+		"axios": "^0.19.2",
+		"body-parser": "^1.19.0",
+		"cookie-parser": "^1.4.5",
+		"cors": "^2.8.5",
+		"debug": "^4.1.1",
+		"express": "^4.17.1",
+		"google-maps-react": "^2.0.6",
+		"http-errors": "^1.7.3",
+		"morgan": "^1.10.0",
+		"next": "9.3.6",
+		"node-fetch": "^2.6.0",
+		"react": "16.13.1",
+		"react-dom": "16.13.1"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.3"
+	}
 }
