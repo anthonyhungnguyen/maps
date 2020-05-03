@@ -20,7 +20,7 @@ app
 		server.use(cookieParser())
 
 		// Routes
-		const apiRoute = require('./pages/api/hello')
+		const apiRoute = require('./routes/api')
 		server.use('/api', apiRoute)
 
 		server.get('*', (req, res) => {
