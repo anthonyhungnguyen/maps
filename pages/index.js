@@ -38,10 +38,9 @@ const Home = ({ google }) => {
 
 	const handleFetchNearbyPlaces = async () => {
 		await axios
-			.get(
-				'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=10.748127710852733,106.6128096443417&radius=500&types=food&key=AIzaSyDmbl-UzpILeyTFM5_UbvCRiLHa5-6yhpU'
-			)
-			.then((data) => console.log(data.json()))
+			.get('/api')
+			.then((response) => response.data)
+			.then(console.log)
 	}
 
 	return (
