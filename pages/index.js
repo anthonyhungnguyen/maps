@@ -28,7 +28,6 @@ const Home = ({ google }) => {
 	const [ currentMapType, setCurrentMapType ] = useState('satellite')
 	const [ detailsView, setDetailsView ] = useState([])
 	const mapRef = useRef()
-	// const connection = new WebSocket('wss://evening-depths-09838.herokuapp.com:8080')
 
 	useEffect(() => {
 		const loadCurrentLocations = () => {
