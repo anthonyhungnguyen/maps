@@ -19,6 +19,7 @@
 		"debug": "^4.1.1",
 		"decode-google-map-polyline": "^1.0.1",
 		"express": "^4.17.1",
+		"fs": "^0.0.1-security",
 		"google-maps-react": "^2.0.6",
 		"http-errors": "^1.7.3",
 		"morgan": "^1.10.0",
@@ -30,6 +31,7 @@
 		"react-dom": "16.13.1",
 		"react-toastify": "^6.0.5",
 		"simple-react-notifications": "^1.2.16",
+		"stream-chat-react": "^1.1.2",
 		"tailwindcss": "^1.4.6",
 		"websocket": "^1.0.31"
 	},
