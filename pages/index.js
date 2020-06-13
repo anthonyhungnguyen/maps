@@ -3,14 +3,13 @@ import { Circle, GoogleApiWrapper, InfoWindow, Map, Polyline, Marker } from 'goo
 import Head from 'next/head'
 import React, { useEffect, useRef, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { w3cwebsocket as WebSocket } from 'websocket'
 import ChangeMapType from '../components/ChangeMapType'
 import Toolbar from '../components/Toolbar/Toolbar'
 import { getDistance } from '../utils/supplement'
 import DetailsView from '../components/DetailsView'
 
-var connection = new WebSocket('ws://whispering-eyrie-31099.herokuapp.com')
+var connection = new WebSocket('wss://whispering-eyrie-31099.herokuapp.com')
 
 const Home = ({ google }) => {
 	const [ showingInfoWindow, setShowingInfoWindow ] = useState(false)
