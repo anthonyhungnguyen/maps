@@ -10,6 +10,7 @@ import { getDistance } from '../utils/supplement'
 import DetailsView from '../components/DetailsView'
 
 var connection = new WebSocket('wss://whispering-eyrie-31099.herokuapp.com')
+// var connection = new WebSocket('ws://127.0.0.1:8080')
 
 const Home = ({ google }) => {
 	const [ showingInfoWindow, setShowingInfoWindow ] = useState(false)
@@ -134,6 +135,12 @@ const Home = ({ google }) => {
 				connection.send(
 					JSON.stringify({
 						msg: 'TURN LIGHT ON'
+					})
+				)
+			} else {
+				connection.send(
+					JSON.stringify({
+						msg: 'TURN LIGHT OFF'
 					})
 				)
 			}
