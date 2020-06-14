@@ -1,15 +1,19 @@
 import axios from 'axios'
 import { Circle, GoogleApiWrapper, InfoWindow, Map, Polyline, Marker } from 'google-maps-react'
 import Head from 'next/head'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, createRef } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { w3cwebsocket as WebSocket } from 'websocket'
 import ChangeMapType from '../components/ChangeMapType'
 import Toolbar from '../components/Toolbar/Toolbar'
 import { getDistance } from '../utils/supplement'
 import DetailsView from '../components/DetailsView'
+import Chat from '../components/Chat/Chat'
+import io from 'socket.io-client'
 
-var connection = new WebSocket('wss://whispering-eyrie-31099.herokuapp.com')
+var connection = new WebSocket('wss://whispering-eyrie-31099.herokuapp.com/')
+const ENDPOINT = 'https://chat-app-fva.herokuapp.com'
+let socket
 
 const Home = ({ google }) => {
 	const [ showingInfoWindow, setShowingInfoWindow ] = useState(false)
@@ -24,6 +28,11 @@ const Home = ({ google }) => {
 	const [ endName, setEndName ] = useState('')
 	const [ directionsResult, setDirectionsResult ] = useState()
 	const [ detailsView, setDetailsView ] = useState([])
+	const [ userName, setUserName ] = useState('')
+	const [ roomName, setRoomName ] = useState('')
+	const [ showJoinRoom, setShowJoinRoom ] = useState(false)
+	const [ showChatRoom, setShowChatRoom ] = useState(false)
+	const [ isLoggedIn, setIsLoggedIn ] = useState(false)
 	const mapRef = useRef()
 
 	useEffect(() => {
@@ -95,6 +104,7 @@ const Home = ({ google }) => {
 		loadCoronaInfo()
 		loadCurrentLocations()
 		window.WebSocket = window.WebSocket || window.MozWebSocket
+		socket = io(ENDPOINT)
 	}, [])
 
 	connection.onopen = function() {
@@ -155,6 +165,28 @@ const Home = ({ google }) => {
 		}
 	}
 
+	const handleOpenMessageRoom = (e) => {
+		e.preventDefault()
+		setShowChatRoom(true)
+		setShowJoinRoom(false)
+		setIsLoggedIn(true)
+	}
+
+	const handleMessageClick = () => {
+		if (isLoggedIn) {
+			if (showChatRoom) {
+				setShowChatRoom(false)
+			} else {
+				setShowChatRoom(true)
+			}
+		} else {
+			if (showJoinRoom) {
+				setShowJoinRoom(false)
+			} else {
+				setShowJoinRoom(true)
+			}
+		}
+	}
 	return (
 		<div className='container'>
 			<Head>
@@ -214,6 +246,50 @@ const Home = ({ google }) => {
 						handleMarkerClick={handleMarkerClick}
 						directionsResult={directionsResult}
 					/>
+
+					<button
+						className='fixed'
+						style={{ left: '45%', right: '55%', bottom: '2.5%' }}
+						onClick={handleMessageClick}
+					>
+						Hello
+					</button>
+					{showJoinRoom ? (
+						<div className='login-box'>
+							<h2>Login</h2>
+							<form onSubmit={handleOpenMessageRoom}>
+								<div className='user-box'>
+									<input
+										type='text'
+										id='name'
+										value={userName}
+										placeholder='Enter username'
+										onChange={(e) => setUserName(e.target.value)}
+									/>
+									<label>Username</label>
+								</div>
+								<div className='user-box'>
+									<input
+										type='text'
+										id='room'
+										value={roomName}
+										placeholder='Enter room name'
+										onChange={(e) => setRoomName(e.target.value)}
+									/>
+									<label>RoomName</label>
+								</div>
+								<button type='submit' className='m-auto'>
+									<span />
+									<span />
+									<span />
+									<span />
+									Join Room
+								</button>
+							</form>
+						</div>
+					) : null}
+
+					{showChatRoom ? <Chat name={userName} room={roomName} socket={socket} /> : null}
 					<ChangeMapType mapRef={mapRef} />
 					<DetailsView detailsView={detailsView} />
 					<ToastContainer
