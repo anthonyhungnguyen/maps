@@ -146,6 +146,12 @@ const Home = ({ google }) => {
 						msg: 'TURN LIGHT ON'
 					})
 				)
+			} else {
+				connection.send(
+					JSON.stringify({
+						msg: 'TURN LIGHT OFF'
+					})
+				)
 			}
 		}
 	}

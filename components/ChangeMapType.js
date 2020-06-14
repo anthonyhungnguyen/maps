@@ -19,6 +19,7 @@ const ChangeMapType = ({ mapRef }) => {
 				<span className='bottom-key-1' />
 				<span className='bottom-key-2' />
 			</button>
+			{/* <button>TURN LIGHT ON</button> */}
 		</div>
 	)
 }
