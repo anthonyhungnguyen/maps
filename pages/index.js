@@ -5,9 +5,9 @@ import React, { useEffect, useRef, useState, createRef } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { w3cwebsocket as WebSocket } from 'websocket'
 import ChangeMapType from '../components/ChangeMapType'
-import Toolbar from '../components/Toolbar/Toolbar'
+import Toolbar from '../components/Toolbar'
 import { getDistance } from '../utils/supplement'
-import DetailsView from '../components/DetailsView'
+import PropagateLoader from 'react-spinners/PropagateLoader'
 import Chat from '../components/Chat/Chat'
 import io from 'socket.io-client'
 
@@ -21,18 +21,21 @@ const Home = ({ google }) => {
 	const [ selectedPlace, setSelectedPlace ] = useState({})
 	const [ coordinate, setCoordinate ] = useState(null)
 	const [ fetchPlaces, setFetchPlaces ] = useState([])
+	const [ recPlaces, setRecPlaces ] = useState([])
+	const [ changeTabCurrentPlaces, setChangeTabCurrentPlaces ] = useState(true)
 	const [ circles, setCircles ] = useState([])
 	const [ circleLocations, setCircleLocations ] = useState([])
 	const [ currentButtonName, setCurrentButtonName ] = useState(`What's nearby?`)
 	const [ endLocation, setEndLocation ] = useState({})
 	const [ endName, setEndName ] = useState('')
 	const [ directionsResult, setDirectionsResult ] = useState()
-	const [ detailsView, setDetailsView ] = useState([])
+
 	const [ userName, setUserName ] = useState('')
 	const [ roomName, setRoomName ] = useState('')
 	const [ showJoinRoom, setShowJoinRoom ] = useState(false)
 	const [ showChatRoom, setShowChatRoom ] = useState(false)
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+	const [ isLoading, setIsLoading ] = useState(true)
 	const mapRef = useRef()
 
 	useEffect(() => {
@@ -105,7 +108,15 @@ const Home = ({ google }) => {
 		loadCurrentLocations()
 		window.WebSocket = window.WebSocket || window.MozWebSocket
 		socket = io(ENDPOINT)
+		setIsLoading(false)
 	}, [])
+
+	useEffect(
+		() => {
+			setDirectionsResult()
+		},
+		[ changeTabCurrentPlaces ]
+	)
 
 	connection.onopen = function() {
 		console.log('Connect success')
@@ -199,6 +210,11 @@ const Home = ({ google }) => {
 				<title>Simple Maps</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
+			{isLoading ? (
+				<div className='w-screen h-screen bg-black flex justify-center items-center '>
+					<PropagateLoader size={15} color={'#fff'} loading={isLoading} />
+				</div>
+			) : null}
 			{coordinate ? (
 				<div>
 					<Map
@@ -223,7 +239,7 @@ const Home = ({ google }) => {
 								scaledSize: new google.maps.Size(50, 50)
 							}}
 						/>
-						{fetchPlaces ? fetchPlaces : null}
+						{fetchPlaces ? changeTabCurrentPlaces ? fetchPlaces : recPlaces : null}
 						{circles ? circles : null}
 						{directionsResult ? (
 							<Polyline
@@ -241,11 +257,14 @@ const Home = ({ google }) => {
 					</Map>
 
 					<Toolbar
+						setIsLoading={setIsLoading}
 						currentButtonName={currentButtonName}
 						coordinate={coordinate}
+						changeTabCurrentPlaces={changeTabCurrentPlaces}
 						setCurrentButtonName={setCurrentButtonName}
+						setChangeTabCurrentPlaces={setChangeTabCurrentPlaces}
 						setFetchPlaces={setFetchPlaces}
-						setDetailsView={setDetailsView}
+						setRecPlaces={setRecPlaces}
 						endLocation={endLocation}
 						endName={endName}
 						setDirectionsResult={setDirectionsResult}
@@ -253,13 +272,12 @@ const Home = ({ google }) => {
 						directionsResult={directionsResult}
 					/>
 
-					<button
+					<div
+						id='chat-btn'
 						className='fixed'
 						style={{ left: '45%', right: '55%', bottom: '2.5%' }}
 						onClick={handleMessageClick}
-					>
-						Hello
-					</button>
+					/>
 					{showJoinRoom ? (
 						<div className='login-box'>
 							<h2>Login</h2>
@@ -297,7 +315,6 @@ const Home = ({ google }) => {
 
 					{showChatRoom ? <Chat name={userName} room={roomName} socket={socket} /> : null}
 					<ChangeMapType mapRef={mapRef} />
-					<DetailsView detailsView={detailsView} />
 					<ToastContainer
 						position='top-center'
 						autoClose={1000}

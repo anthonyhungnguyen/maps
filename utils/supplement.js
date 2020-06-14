@@ -1,3 +1,4 @@
+import rules from './rules.json'
 export const handleFetchNearbyIcon = (type) => {
 	switch (type) {
 		case 'shopping_mall':
@@ -13,6 +14,28 @@ export const handleFetchNearbyIcon = (type) => {
 		case 'cafe':
 			return '/images/cafe.png'
 	}
+}
+
+export const handleFetchNameFromType = (type) => {
+	switch (type) {
+		case 'shopping_mall':
+			return 'Shopping Mall'
+		case 'restaurant':
+			return 'Restaurant'
+		case 'hair_care':
+			return 'Hair Care'
+		case 'bank':
+			return 'Bank'
+		case 'movie_theater':
+			return 'Movie Theater'
+		case 'cafe':
+			return 'Cafe'
+	}
+}
+
+export const handleFetchRecommendPlacesFromRules = (type) => {
+	const ruless = rules[type]
+	return ruless
 }
 
 export const rad = function(x) {
