@@ -12,6 +12,7 @@ const Chat = ({ room, name, socket }) => {
 	useEffect(() => {
 		socket.emit('join', { name, room }, (error) => {
 			if (error) {
+				console.log(error)
 				alert(error)
 			}
 		})
@@ -19,13 +20,15 @@ const Chat = ({ room, name, socket }) => {
 
 	useEffect(() => {
 		const oldMessages = JSON.parse(localStorage.getItem('oldMessages'))
-		if (oldMessages) {
-			setMessages(oldMessages)
+		console.log(oldMessages[room])
+		if (oldMessages[room]) {
+			setMessages(oldMessages[room])
 		}
 		socket.on('message', (message) => {
 			setMessages((messages) => {
 				let newMessage = [ ...messages, message ]
-				localStorage.setItem('oldMessages', JSON.stringify(newMessage))
+				const oldMessages = JSON.parse(localStorage.getItem('oldMessages'))
+				localStorage.setItem('oldMessages', JSON.stringify({ ...oldMessages, [room]: newMessage }))
 				return newMessage
 			})
 		})
