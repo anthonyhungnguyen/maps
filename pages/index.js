@@ -66,7 +66,7 @@ const Home = ({ google }) => {
 							lat: c.lat,
 							lng: c.lng
 						}}
-						onMouseover={() => {
+						onClick={() => {
 							const Msg = (
 								<div className='bg-black'>
 									<p>

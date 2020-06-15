@@ -1,6 +1,6 @@
 import React from 'react'
 
-import onlineIcon from '../../public/onlineIcon.png'
+import onlineIcon from '../../../public/onlineIcon.png'
 
 import './InfoBar.css'
 
