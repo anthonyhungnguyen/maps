@@ -20,16 +20,23 @@ const Chat = ({ room, name, socket }) => {
 
 	useEffect(() => {
 		const oldMessages = JSON.parse(localStorage.getItem('oldMessages'))
-		console.log(oldMessages[room])
-		if (oldMessages[room]) {
-			setMessages(oldMessages[room])
+		if (oldMessages) {
+			if (oldMessages[room]) {
+				setMessages(oldMessages[room])
+			}
 		}
+
 		socket.on('message', (message) => {
 			setMessages((messages) => {
 				let newMessage = [ ...messages, message ]
 				const oldMessages = JSON.parse(localStorage.getItem('oldMessages'))
-				localStorage.setItem('oldMessages', JSON.stringify({ ...oldMessages, [room]: newMessage }))
-				return newMessage
+				if (oldMessages) {
+					localStorage.setItem('oldMessages', JSON.stringify({ ...oldMessages, [room]: newMessage }))
+					return newMessage
+				} else {
+					localStorage.setItem('oldMessages', JSON.stringify({ [room]: newMessage }))
+					return newMessage
+				}
 			})
 		})
 	}, [])
