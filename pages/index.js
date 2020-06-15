@@ -289,6 +289,7 @@ const Home = ({ google }) => {
 										value={userName}
 										placeholder='Enter username'
 										onChange={(e) => setUserName(e.target.value)}
+										autoComplete='off'
 									/>
 									<label>Username</label>
 								</div>
@@ -299,6 +300,7 @@ const Home = ({ google }) => {
 										value={roomName}
 										placeholder='Enter room name'
 										onChange={(e) => setRoomName(e.target.value)}
+										autoComplete='off'
 									/>
 									<label>RoomName</label>
 								</div>
