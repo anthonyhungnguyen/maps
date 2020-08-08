@@ -1,3 +1,10 @@
 {
-	"movie_theater": [ "cafe", "restaurant" ]
+	"movie_theater": [
+		"cafe",
+		"restaurant"
+	],
+	"shopping_mall": [
+		"cafe",
+		"restaurant"
+	]
 }

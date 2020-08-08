@@ -12,8 +12,9 @@ const Chat = ({ room, name, socket }) => {
 	useEffect(() => {
 		socket.emit('join', { name, room }, (error) => {
 			if (error) {
-				console.log(error)
-				alert(error)
+				if (!alert(error.error)) {
+					window.location.reload()
+				}
 			}
 		})
 	}, [])
